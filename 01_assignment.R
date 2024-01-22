@@ -169,3 +169,5 @@ df %>%
   geom_tile() +
   scale_fill_viridis_c(option = "magma") +
   theme_classic()
+
+
