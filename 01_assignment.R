@@ -152,7 +152,7 @@ df %>%
               values_from = `flights normalized`, 
               values_fill = 0)
 
-# visualize heatmap (optional)
+# visualize heatmap 
 df %>% 
   select(carrier = UniqueCarrier,
          month) %>% 
