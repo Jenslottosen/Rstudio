@@ -29,14 +29,77 @@ continents <- tribble(
 
 # calculate summaries
 
-continents |> 
+continents %>%
   summarise(`Area (km2) - tot` = sum(`Area (km2)`),
             `Population - tot` = sum(Population),
             `Percent total landmass - check` = sum(`Percent total landmass`),
-            `Percent total Population - check` = sum(`Percent total Population`))
+            `Percent total pop. - check` = sum(`Percent total pop.`))
 
 
+
+# Exercise 2
+
+# Manual parsing to maintain control 
+df2 <- read_csv("./data/flights_02.csv",
+                col_names = T,
+                col_types = cols(
+                  UniqueCarrier = col_character(),
+                  FlightNum = col_integer(),
+                  Year = col_integer(),
+                  Month = col_integer(),
+                  DayofMonth = col_integer(),
+                  Origin = col_character(),
+                  Dest = col_character(),
+                  Distance = col_number()
+                ))
+
+
+# Exerise 3 
+
+library(readr)
+
+df3 <- read_delim("./data/flights_03.csv",
+                  delim = "|",
+                  col_names = F,
+                  skip = 12,
+                  comment = "#",
+                  col_types = cols(.default = "c")) |> 
   
+  rename(UniqueCarrier = 1,
+         FlightNum = 2,
+         Date = 3,
+         Origin = 4,
+         Dest = 5,
+         Distance = 6) |> 
+  # Column parsing into mutate
+  mutate(UniqueCarrier = as.character(UniqueCarrier),
+         FlightNum = as.integer(FlightNum),
+         Date = lubridate::ymd(Date),
+         Origin = as.character(Origin),
+         Dest = as.character(Dest),
+         Distance = as.character(Distance))
+
+str(df3)
+
+
+# Exercise 4 
+
+system.time(
+  df4.read <- read_csv2(file = "./data/big_table_04.csv",
+                        col_names = T,
+                        col_types = cols(.default = "c"))
+  
+)
+
+
+system.time(
+  df4.read <- data.table::fread(file = "./data/big_table_04.csv",
+                                sep = ";",
+                                header = T,
+                                colClasses = "character")
+  
+)
+
 
 
 
